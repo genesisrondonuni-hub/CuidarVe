@@ -8,14 +8,21 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [balance, setBalance] = useState(0);
   const [demoMode, setDemoMode] = useState(true); // Modo Demo activo por defecto para pruebas
+  const [isMasterOwner, setIsMasterOwner] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     try {
       const stored = localStorage.getItem('cuidarve_auth');
       const storedDemo = localStorage.getItem('cuidarve_demo_mode');
+      const storedMaster = localStorage.getItem('cuidarve_is_master');
+
       if (storedDemo !== null) {
         setDemoMode(storedDemo === 'true');
+      }
+
+      if (storedMaster === 'true') {
+        setIsMasterOwner(true);
       }
 
       if (stored) {
@@ -23,6 +30,10 @@ export function AuthProvider({ children }) {
         if (parsed.token && parsed.user) {
           setUser(parsed.user);
           setToken(parsed.token);
+          if (parsed.user.role === 'admin') {
+            setIsMasterOwner(true);
+            localStorage.setItem('cuidarve_is_master', 'true');
+          }
           if (parsed.user.role === 'nurse') {
             setBalance(parsed.user.balance || 0);
             api.getTokenBalance()
@@ -43,6 +54,10 @@ export function AuthProvider({ children }) {
   const saveSession = (newUser, newToken) => {
     setUser(newUser);
     setToken(newToken);
+    if (newUser.role === 'admin') {
+      setIsMasterOwner(true);
+      localStorage.setItem('cuidarve_is_master', 'true');
+    }
     if (newUser.role === 'nurse') {
       setBalance(newUser.balance || 0);
     }
@@ -71,7 +86,9 @@ export function AuthProvider({ children }) {
     setUser(null);
     setToken(null);
     setBalance(0);
+    setIsMasterOwner(false);
     localStorage.removeItem('cuidarve_auth');
+    localStorage.removeItem('cuidarve_is_master');
   };
 
   const updateBalance = (newBalance) => {
@@ -120,6 +137,7 @@ export function AuthProvider({ children }) {
       balance,
       loading,
       demoMode,
+      isMasterOwner,
       toggleDemoMode,
       loginAsDemo,
       login,

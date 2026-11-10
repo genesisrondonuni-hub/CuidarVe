@@ -5,7 +5,7 @@ import { api } from '../services/api';
 import { toast } from 'react-hot-toast';
 
 export default function DemoSwitcher({ setView }) {
-  const { user, loginAsDemo, refreshBalance, demoMode, toggleDemoMode } = useAuth();
+  const { user, loginAsDemo, refreshBalance, demoMode, toggleDemoMode, isMasterOwner } = useAuth();
   const [resetting, setResetting] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -57,17 +57,19 @@ export default function DemoSwitcher({ setView }) {
         {/* Botones de cambio rápido de rol */}
         {!collapsed && (
           <div className="flex items-center gap-1.5 overflow-x-auto py-0.5">
-            <button
-              onClick={() => handleSwitch('admin')}
-              className={`px-3 py-1 rounded-lg font-black transition flex items-center gap-1 text-[11px] ${
-                user?.role === 'admin'
-                  ? 'bg-amber-500 text-slate-950 shadow-sm'
-                  : 'bg-white/10 hover:bg-white/20 text-white'
-              }`}
-            >
-              <Crown className="w-3 h-3 text-amber-300" />
-              <span>Dueño (Master)</span>
-            </button>
+            {isMasterOwner && (
+              <button
+                onClick={() => handleSwitch('admin')}
+                className={`px-3 py-1 rounded-lg font-black transition flex items-center gap-1 text-[11px] ${
+                  user?.role === 'admin'
+                    ? 'bg-amber-500 text-slate-950 shadow-sm'
+                    : 'bg-white/10 hover:bg-white/20 text-white'
+                }`}
+              >
+                <Crown className="w-3 h-3 text-amber-300" />
+                <span>Dueño (Master)</span>
+              </button>
+            )}
 
             <button
               onClick={() => handleSwitch('nurse')}

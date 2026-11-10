@@ -13,6 +13,7 @@ npm-debug.log*
 .env.*.local
 
 # SQLite de desarrollo local (opcional según si se desea sembrar o no)
+backend/cuidarve.db
 *.db-journal
 
 # Sistema y editores

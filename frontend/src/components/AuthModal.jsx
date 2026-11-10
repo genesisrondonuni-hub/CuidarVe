@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 export default function AuthModal({ isOpen, onClose, initialRole = 'patient' }) {
   if (!isOpen) return null;
 
-  const { login, register } = useAuth();
+  const { login, register, isMasterOwner } = useAuth();
   const [isLogin, setIsLogin] = useState(false);
   const [role, setRole] = useState(initialRole); // 'patient' o 'nurse'
   const [loading, setLoading] = useState(false);
@@ -253,14 +253,16 @@ export default function AuthModal({ isOpen, onClose, initialRole = 'patient' }) 
             <p className="text-[10px] uppercase font-bold text-slate-400 text-center tracking-wider mb-2">
               Acceso Rápido de Prueba (Demo)
             </p>
-            <div className="grid grid-cols-3 gap-1.5">
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('admin')}
-                className="py-1.5 px-1 bg-amber-50 hover:bg-amber-100 text-amber-950 rounded-lg text-[10px] font-extrabold transition border border-amber-200"
-              >
-                👑 Dueño (Admin)
-              </button>
+            <div className={`grid ${isMasterOwner ? 'grid-cols-3' : 'grid-cols-2'} gap-1.5`}>
+              {isMasterOwner && (
+                <button
+                  type="button"
+                  onClick={() => handleQuickLogin('admin')}
+                  className="py-1.5 px-1 bg-amber-50 hover:bg-amber-100 text-amber-950 rounded-lg text-[10px] font-extrabold transition border border-amber-200"
+                >
+                  👑 Dueño (Admin)
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() => handleQuickLogin('nurse')}
