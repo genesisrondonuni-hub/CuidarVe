@@ -1,0 +1,15 @@
+{
+  "name": "cuidarve",
+  "version": "1.0.0",
+  "description": "Plataforma de Salud Domiciliaria en Venezuela",
+  "main": "backend/index.js",
+  "scripts": {
+    "build": "npm --prefix frontend install && npm --prefix frontend run build && npm --prefix backend install",
+    "start": "node backend/index.js",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
