@@ -31,6 +31,22 @@ function MainApp() {
     }
   };
 
+  // Escuchar parámetros de URL para navegación y registro externo desde la Landing Page
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const viewParam = params.get('view');
+    const authParam = params.get('auth') || params.get('action');
+    const roleParam = params.get('role');
+
+    if (viewParam && ['patient', 'nurse', 'admin', 'home'].includes(viewParam)) {
+      setView(viewParam);
+    }
+    if (authParam === 'register' || authParam === 'login' || authParam === 'auth') {
+      handleOpenAuth(roleParam === 'nurse' ? 'nurse' : 'patient');
+    }
+  }, []);
+
   // Escucha activa de compras de tokens en tiempo real para el Dueño (Admin)
   useEffect(() => {
     if (!user || user.role !== 'admin') return;
