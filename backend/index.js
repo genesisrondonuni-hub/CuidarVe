@@ -784,8 +784,8 @@ if (fs.existsSync(distPath)) {
 }
 
 const PORT = process.env.PORT || 5001;
-server.listen(PORT, () => {
-  console.log(`Backend CuidarVe ejecutándose en http://localhost:${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`Backend CuidarVe ejecutándose en http://0.0.0.0:${PORT}`);
   // Iniciar sincronización periódica con el Banco Central de Venezuela
   initBcvAutoSync(60);
 });
