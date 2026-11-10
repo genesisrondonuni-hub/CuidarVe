@@ -4,7 +4,7 @@
   "description": "Plataforma de Salud Domiciliaria en Venezuela",
   "main": "backend/index.js",
   "scripts": {
-    "build": "npm --prefix backend install --build-from-source=sqlite3",
+    "build": "npm --prefix backend install && npm --prefix frontend install && npm --prefix frontend run build",
     "start": "node backend/index.js",
     "build:frontend": "npm --prefix frontend run build"
   },

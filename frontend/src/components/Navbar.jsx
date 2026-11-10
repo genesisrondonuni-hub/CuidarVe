@@ -1,5 +1,5 @@
 import React from 'react';
-import { HeartPulse, Coins, User, LogOut, PlusCircle, ShieldCheck, Crown } from 'lucide-react';
+import { HeartPulse, Coins, User, LogOut, PlusCircle, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar({ onOpenAuth, onOpenTokenStore, setView, currentView }) {
@@ -29,22 +29,6 @@ export default function Navbar({ onOpenAuth, onOpenTokenStore, setView, currentV
 
         {/* Acciones y Perfil */}
         <div className="flex items-center gap-2.5 sm:gap-3">
-          
-          {/* Si el usuario es el Dueño Master */}
-          {user && user.role === 'admin' && (
-            <button
-              onClick={() => setView('admin')}
-              className={`text-xs font-black px-3.5 py-1.5 rounded-xl transition flex items-center gap-1.5 shadow-sm active:scale-95 ${
-                currentView === 'admin'
-                  ? 'bg-amber-400 text-slate-950 ring-2 ring-amber-300'
-                  : 'bg-amber-500/90 hover:bg-amber-500 text-slate-950'
-              }`}
-            >
-              <Crown className="w-4 h-4 text-slate-950" />
-              <span>Panel Dueño</span>
-            </button>
-          )}
-
           {user ? (
             <>
               {/* Saldo de tokens si es enfermero */}
@@ -84,12 +68,17 @@ export default function Navbar({ onOpenAuth, onOpenTokenStore, setView, currentV
               {/* Identidad de usuario y logout */}
               <div className="flex items-center gap-2 border-l border-white/20 pl-2.5">
                 <div 
-                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs cursor-pointer border ${
+                  onClick={() => {
+                    if (user.role === 'admin') {
+                      setView(currentView === 'admin' ? 'home' : 'admin');
+                    }
+                  }}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs border ${
                     user.role === 'admin' 
-                      ? 'bg-amber-500 text-slate-950 border-amber-300' 
+                      ? 'bg-teal-800 text-white border-teal-300/40 cursor-pointer hover:border-amber-300' 
                       : 'bg-teal-800 text-white border-teal-300/40'
                   }`}
-                  title={`${user.name} (${user.role})`}
+                  title={user.role === 'admin' ? (currentView === 'admin' ? 'Volver a Inicio' : 'Administración') : `${user.name} (${user.role})`}
                 >
                   {user.avatar || 'U'}
                 </div>
