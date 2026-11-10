@@ -1,9 +1,9 @@
 import React from 'react';
-import { HeartPulse, Coins, User, LogOut, PlusCircle, ShieldCheck, Crown, Sparkles } from 'lucide-react';
+import { HeartPulse, Coins, User, LogOut, PlusCircle, ShieldCheck, Crown } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar({ onOpenAuth, onOpenTokenStore, setView, currentView }) {
-  const { user, balance, logout, demoMode, toggleDemoMode } = useAuth();
+  const { user, balance, logout } = useAuth();
 
   return (
     <header className="bg-teal-700 text-white shadow-md sticky top-0 z-40">
@@ -111,17 +111,6 @@ export default function Navbar({ onOpenAuth, onOpenTokenStore, setView, currentV
               <span>Ingresar / Registro</span>
             </button>
           )}
-
-          {/* Toggle de Modo Demo */}
-          <button
-            onClick={toggleDemoMode}
-            className={`p-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1 ${
-              demoMode ? 'text-amber-300 hover:bg-white/10' : 'text-teal-300/60 hover:text-white'
-            }`}
-            title={demoMode ? 'Modo Demo Activo (Click para desactivar)' : 'Activar Modo Demo'}
-          >
-            <Sparkles className="w-4 h-4" />
-          </button>
         </div>
       </div>
     </header>

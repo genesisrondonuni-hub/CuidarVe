@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { X, User, Phone, Lock, MapPin, ShieldCheck, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
+import { X, User, Phone, Lock, MapPin, ShieldCheck, CheckCircle2, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
 
 export default function AuthModal({ isOpen, onClose, initialRole = 'patient' }) {
   if (!isOpen) return null;
 
-  const { login, register, isMasterOwner } = useAuth();
+  const { login, register } = useAuth();
   const [isLogin, setIsLogin] = useState(false);
   const [role, setRole] = useState(initialRole); // 'patient' o 'nurse'
   const [loading, setLoading] = useState(false);
@@ -53,28 +53,6 @@ export default function AuthModal({ isOpen, onClose, initialRole = 'patient' }) 
       onClose();
     } catch (err) {
       toast.error(err.message || 'Error en la autenticación');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Login de prueba rápido para desarrollo
-  const handleQuickLogin = async (type) => {
-    setLoading(true);
-    try {
-      if (type === 'admin') {
-        await login('admin@cuidarve.com', 'admin123');
-        toast.success('Sesión iniciada como Dueño Master (Admin)');
-      } else if (type === 'nurse') {
-        await login('maria@cuidarve.com', '123456');
-        toast.success('Sesión iniciada como Lic. María (Enfermera)');
-      } else {
-        await login('juan@cuidarve.com', '123456');
-        toast.success('Sesión iniciada como Juan Pérez (Paciente)');
-      }
-      onClose();
-    } catch (err) {
-      toast.error(err.message || 'Error en login rápido');
     } finally {
       setLoading(false);
     }
@@ -247,38 +225,6 @@ export default function AuthModal({ isOpen, onClose, initialRole = 'patient' }) 
               )}
             </button>
           </form>
-
-          {/* Cuentas de Acceso Rápido para Prueba */}
-          <div className="mt-5 pt-4 border-t border-slate-100">
-            <p className="text-[10px] uppercase font-bold text-slate-400 text-center tracking-wider mb-2">
-              Acceso Rápido de Prueba (Demo)
-            </p>
-            <div className={`grid ${isMasterOwner ? 'grid-cols-3' : 'grid-cols-2'} gap-1.5`}>
-              {isMasterOwner && (
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin('admin')}
-                  className="py-1.5 px-1 bg-amber-50 hover:bg-amber-100 text-amber-950 rounded-lg text-[10px] font-extrabold transition border border-amber-200"
-                >
-                  👑 Dueño (Admin)
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('nurse')}
-                className="py-1.5 px-1 bg-teal-50 hover:bg-teal-100 text-teal-800 rounded-lg text-[10px] font-semibold transition border border-teal-200"
-              >
-                👩‍⚕️ Lic. María
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickLogin('patient')}
-                className="py-1.5 px-1 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-[10px] font-semibold transition border border-slate-200"
-              >
-                👤 Juan Pérez
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>

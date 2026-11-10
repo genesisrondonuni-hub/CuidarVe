@@ -6,7 +6,6 @@ import { getWsUrl } from './config';
 import Navbar from './components/Navbar';
 import AuthModal from './components/AuthModal';
 import TokenStoreModal from './components/TokenStoreModal';
-import DemoSwitcher from './components/DemoSwitcher';
 import AdminDashboard from './components/AdminDashboard';
 import Home from './pages/Home';
 import PatientView from './pages/PatientView';
@@ -115,9 +114,6 @@ function MainApp() {
           duration: 3500
         }} 
       />
-
-      {/* Barra de Modo Demostración Interactivo */}
-      <DemoSwitcher setView={setView} />
 
       {/* Barra de navegación superior */}
       <Navbar 

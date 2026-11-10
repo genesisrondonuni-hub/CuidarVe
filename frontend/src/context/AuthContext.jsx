@@ -7,19 +7,13 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [balance, setBalance] = useState(0);
-  const [demoMode, setDemoMode] = useState(true); // Modo Demo activo por defecto para pruebas
   const [isMasterOwner, setIsMasterOwner] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     try {
       const stored = localStorage.getItem('cuidarve_auth');
-      const storedDemo = localStorage.getItem('cuidarve_demo_mode');
       const storedMaster = localStorage.getItem('cuidarve_is_master');
-
-      if (storedDemo !== null) {
-        setDemoMode(storedDemo === 'true');
-      }
 
       if (storedMaster === 'true') {
         setIsMasterOwner(true);
@@ -113,33 +107,13 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const toggleDemoMode = () => {
-    const nextVal = !demoMode;
-    setDemoMode(nextVal);
-    localStorage.setItem('cuidarve_demo_mode', String(nextVal));
-  };
-
-  // Cambio instantáneo de rol para el modo demo
-  const loginAsDemo = async (role) => {
-    if (role === 'admin') {
-      return await login('admin@cuidarve.com', 'admin123');
-    } else if (role === 'nurse') {
-      return await login('maria@cuidarve.com', '123456');
-    } else {
-      return await login('juan@cuidarve.com', '123456');
-    }
-  };
-
   return (
     <AuthContext.Provider value={{
       user,
       token,
       balance,
       loading,
-      demoMode,
       isMasterOwner,
-      toggleDemoMode,
-      loginAsDemo,
       login,
       register,
       logout,
